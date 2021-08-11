@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.shevlik.pricemonitoring.api.service.IProductService;
+import com.shevlik.pricemonitoring.controller.util.ModelValidator;
 import com.shevlik.pricemonitoring.model.dto.OriginCountryDto;
 import com.shevlik.pricemonitoring.model.dto.ProductDto;
 import com.shevlik.pricemonitoring.model.dto.SearchingProductNameDto;
@@ -24,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ProductController {
 	private final IProductService productService;
+	private final ModelValidator validator;
 	
 	@GetMapping
 	public ResponseEntity<List<ProductDto>> getAllProducts(){
@@ -45,6 +47,7 @@ public class ProductController {
 	
 	@GetMapping ("/by-name")
 	public ResponseEntity<List<ProductDto>> getProductsByNameStartsWith (@RequestBody SearchingProductNameDto dto){
+		validator.validate(dto);
 		List<ProductDto> products = productService.getByNameStartsWith(dto.getSearchingName());
 		return ResponseEntity.ok(products);
 	}

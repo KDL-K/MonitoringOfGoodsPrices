@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.shevlik.pricemonitoring.api.service.IOriginCountryService;
+import com.shevlik.pricemonitoring.controller.util.ModelValidator;
 import com.shevlik.pricemonitoring.model.dto.OriginCountryDto;
 
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 public class OriginCountryController {
 	
 	private final IOriginCountryService originService;
+	private final ModelValidator validator;
 	
 	@GetMapping
 	public ResponseEntity<List<OriginCountryDto>> getAllOrigin(){
@@ -37,14 +39,16 @@ public class OriginCountryController {
 	}
 	
 	@PostMapping ("/mod")
-	public ResponseEntity<Void> addNewOrigin(@RequestBody OriginCountryDto origin){
-		originService.save(origin);
+	public ResponseEntity<Void> addNewOrigin(@RequestBody OriginCountryDto dto){
+		validator.validate(dto);
+		originService.save(dto);
 		return ResponseEntity.ok(null);
 	}
 	
 	@PutMapping ("/mod")
-	public ResponseEntity<Void> updateOrigin (@RequestBody OriginCountryDto origin){
-		originService.update(origin);
+	public ResponseEntity<Void> updateOrigin (@RequestBody OriginCountryDto dto){
+		validator.validate(dto);
+		originService.update(dto);
 		return ResponseEntity.ok(null);
 	}
 	

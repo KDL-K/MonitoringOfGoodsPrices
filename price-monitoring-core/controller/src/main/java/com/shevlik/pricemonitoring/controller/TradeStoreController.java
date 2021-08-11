@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.shevlik.pricemonitoring.api.service.ITradeStoreService;
+import com.shevlik.pricemonitoring.controller.util.ModelValidator;
 import com.shevlik.pricemonitoring.model.dto.TradeStoreDto;
 
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class TradeStoreController {
 	private final ITradeStoreService storeService;
+	private final ModelValidator validator;
 	
 	@GetMapping
 	public ResponseEntity<List<TradeStoreDto>> getAllStores(){
@@ -36,14 +38,16 @@ public class TradeStoreController {
 	}
 	
 	@PostMapping ("/mod")
-	public ResponseEntity<Void> addNewStore(@RequestBody TradeStoreDto store){
-		storeService.save(store);
+	public ResponseEntity<Void> addNewStore(@RequestBody TradeStoreDto dto){
+		validator.validate(dto);
+		storeService.save(dto);
 		return ResponseEntity.ok(null);
 	}
 	
 	@PutMapping ("/mod")
-	public ResponseEntity<Void> updateStore (@RequestBody TradeStoreDto store){
-		storeService.update(store);
+	public ResponseEntity<Void> updateStore (@RequestBody TradeStoreDto dto){
+		validator.validate(dto);
+		storeService.update(dto);
 		return ResponseEntity.ok(null);
 	}
 	

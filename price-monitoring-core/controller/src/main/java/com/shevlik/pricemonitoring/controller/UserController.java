@@ -30,6 +30,7 @@ public class UserController {
 	
 	@PutMapping ("/editing/new-password")
 	public ResponseEntity<Void> changeUserPassword (@RequestBody LoginDto dto){
+		validator.validate(dto);
 		userService.changeUserPassword(dto);
 		return ResponseEntity.ok(null);	
 	}

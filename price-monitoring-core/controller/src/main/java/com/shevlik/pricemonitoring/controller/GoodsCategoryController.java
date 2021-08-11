@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.shevlik.pricemonitoring.api.service.IGoodsCategoryService;
+import com.shevlik.pricemonitoring.controller.util.ModelValidator;
 import com.shevlik.pricemonitoring.model.dto.GoodsCategoryDto;
 
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 public class GoodsCategoryController {
 	
 	private final IGoodsCategoryService categoryService;
+	private final ModelValidator validator;
 	
 	
 	@GetMapping
@@ -41,14 +43,16 @@ public class GoodsCategoryController {
 	}
 	
 	@PostMapping ("/mod")
-	public ResponseEntity<Void> addNewCategory(@RequestBody GoodsCategoryDto category){
-		categoryService.save(category);
+	public ResponseEntity<Void> addNewCategory(@RequestBody GoodsCategoryDto dto){
+		validator.validate(dto);
+		categoryService.save(dto);
 		return ResponseEntity.ok(null);
 	}
 	
 	@PutMapping ("/mod")
-	public ResponseEntity<Void> updateCategory (@RequestBody GoodsCategoryDto category){
-		categoryService.update(category);
+	public ResponseEntity<Void> updateCategory (@RequestBody GoodsCategoryDto dto){
+		validator.validate(dto);
+		categoryService.update(dto);
 		return ResponseEntity.ok(null);
 	}
 	

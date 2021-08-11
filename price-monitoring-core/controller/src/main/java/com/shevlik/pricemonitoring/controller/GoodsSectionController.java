@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.shevlik.pricemonitoring.api.service.IGoodsSectionService;
+import com.shevlik.pricemonitoring.controller.util.ModelValidator;
 import com.shevlik.pricemonitoring.model.dto.GoodsSectionDto;
 
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 public class GoodsSectionController {
 	
 	private final IGoodsSectionService sectionService;
+	private final ModelValidator validator;
 	
 	@GetMapping
 	public ResponseEntity<List<GoodsSectionDto>> getAllSections(){
@@ -37,14 +39,16 @@ public class GoodsSectionController {
 	}
 	
 	@PostMapping ("/mod")
-	public ResponseEntity<Void> addNewSection(@RequestBody GoodsSectionDto section){
-		sectionService.save(section);
+	public ResponseEntity<Void> addNewSection(@RequestBody GoodsSectionDto dto){
+		validator.validate(dto);
+		sectionService.save(dto);
 		return ResponseEntity.ok(null);
 	}
 	
 	@PutMapping ("/mod")
-	public ResponseEntity<Void> updateSection (@RequestBody GoodsSectionDto section){
-		sectionService.update(section);
+	public ResponseEntity<Void> updateSection (@RequestBody GoodsSectionDto dto){
+		validator.validate(dto);
+		sectionService.update(dto);
 		return ResponseEntity.ok(null);
 	}
 	

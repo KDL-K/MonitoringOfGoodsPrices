@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.shevlik.pricemonitoring.api.service.IAddressService;
+import com.shevlik.pricemonitoring.controller.util.ModelValidator;
 import com.shevlik.pricemonitoring.model.dto.AddressDto;
 
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 public class AddressController {
 	
 	private final IAddressService addressService;
+	private final ModelValidator validator;
 	
 	
 	@GetMapping
@@ -38,14 +40,16 @@ public class AddressController {
 	}
 	
 	@PostMapping ("/mod")
-	public ResponseEntity<Void> addNewAddress(@RequestBody AddressDto address){
-		addressService.save(address);
+	public ResponseEntity<Void> addNewAddress(@RequestBody AddressDto dto){
+		validator.validate(dto);
+		addressService.save(dto);
 		return ResponseEntity.ok(null);
 	}
 	
 	@PutMapping ("/mod")
-	public ResponseEntity<Void> updateAddress (@RequestBody AddressDto address){
-		addressService.update(address);
+	public ResponseEntity<Void> updateAddress (@RequestBody AddressDto dto){
+		validator.validate(dto);
+		addressService.update(dto);
 		return ResponseEntity.ok(null);
 	}
 	

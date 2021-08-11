@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.shevlik.pricemonitoring.api.service.IAssortmentService;
+import com.shevlik.pricemonitoring.controller.util.ModelValidator;
 import com.shevlik.pricemonitoring.model.dto.AssortmentDto;
 import com.shevlik.pricemonitoring.model.dto.PriceCompareDto;
 
@@ -24,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 public class AssortmentController {
 	
 	private final IAssortmentService assortmentService;
+	private final ModelValidator validator;
 
 	
 	@GetMapping("/{id}")
@@ -45,8 +47,9 @@ public class AssortmentController {
 	}
 	
 	@PostMapping ("/mod")
-	public ResponseEntity<Void> createAssortment(@RequestBody AssortmentDto assortment){
-		assortmentService.save(assortment);
+	public ResponseEntity<Void> createAssortment(@RequestBody AssortmentDto dto){
+		validator.validate(dto);
+		assortmentService.save(dto);
 		return ResponseEntity.ok(null);
 	}
 	

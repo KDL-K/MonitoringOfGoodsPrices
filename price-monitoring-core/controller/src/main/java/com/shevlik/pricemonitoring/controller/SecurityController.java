@@ -23,16 +23,17 @@ public class SecurityController {
 	private final ModelValidator validator;
 	
 	@PostMapping ("/signin")
-	public ResponseEntity<AuthorizedUserDto> signIn (@RequestBody LoginDto loginDto){
-		AuthorizedUserDto authorizedUser = userService.signIn(loginDto);
+	public ResponseEntity<AuthorizedUserDto> signIn (@RequestBody LoginDto dto){
+		validator.validate(dto);
+		AuthorizedUserDto authorizedUser = userService.signIn(dto);
 		return ResponseEntity.ok(authorizedUser);
 	}
 	
 	
 	@PostMapping ("/signup")
-	public ResponseEntity<Void> signUp (@RequestBody UserDto userDto){
-		validator.validate(userDto);
-		userService.signUp(userDto);
+	public ResponseEntity<Void> signUp (@RequestBody UserDto dto){
+		validator.validate(dto);
+		userService.signUp(dto);
 		return ResponseEntity.ok(null);
 	}
 
