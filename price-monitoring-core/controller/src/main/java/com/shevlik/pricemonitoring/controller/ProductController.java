@@ -65,14 +65,16 @@ public class ProductController {
 	}
 	
 	@PostMapping ("/mod")
-	public ResponseEntity<Void> addNewProduct(@RequestBody ProductDto product){
-		productService.save(product);
+	public ResponseEntity<Void> addNewProduct(@RequestBody ProductDto dto){
+		validator.validate(dto);
+		productService.save(dto);
 		return ResponseEntity.ok(null);
 	}
 	
 	@PutMapping ("/mod")
-	public ResponseEntity<Void> updateProduct (@RequestBody ProductDto product){
-		productService.update(product);
+	public ResponseEntity<Void> updateProduct (@RequestBody ProductDto dto){
+		validator.validate(dto);
+		productService.update(dto);
 		return ResponseEntity.ok(null);
 	}
 	
